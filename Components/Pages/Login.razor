@@ -1,0 +1,52 @@
+﻿@page "/"
+@layout LoginLayout
+@inherits LayoutComponentBase
+@inject NavigationManager _navigation
+
+<h3>Login</h3>
+
+
+@if (!string.IsNullOrEmpty(ErrorMessage))
+{
+    <p class="text-danger">@ErrorMessage</p>
+}
+
+<EditForm Model="@loginModel" OnValidSubmit="HandleLogin">
+
+    <div class="form-username">
+        <label for="username">Username</label>
+        <InputText id="username" class="form-control" @bind-Value="loginModel.Username" />
+    </div>
+
+    <div class="form-password">
+        <label for="password">Password</label>
+        <InputText id="password" class="form-control" @bind-Value="loginModel.Password" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Login</button>
+
+</EditForm>
+
+@code 
+{
+    private LoginModel loginModel = new LoginModel();
+    private string? ErrorMessage;
+
+    private async Task HandleLogin()
+    {
+        if (loginModel.Username == "admin" & loginModel.Password == "password")
+        {
+            _navigation.NavigateTo("/");
+        }
+        else
+        {
+            ErrorMessage = "Invalid username and password";
+        }
+    }
+
+    public class LoginModel
+    {
+        public string Username { get; set; } = string.Empty;
+        public string Password { get; set; } = string.Empty;
+    }
+}
